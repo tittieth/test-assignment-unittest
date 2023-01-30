@@ -4,11 +4,14 @@
 
 import * as functions from "../ts/functions";
 import { Todo } from "../ts/models/Todo";
-import { init } from "../ts/main";
 
 beforeEach(() => {
     document.body.innerHTML = "";
   });
+
+  /* ***********************************************
+  **********Tests for function addTodo*************
+  ************************************************** */
 
 test("should add new todo correctly", () => {
     //arrange
@@ -39,6 +42,10 @@ test("should not add new todo", () => {
     expect(todoTxt).toBe("");
 });
 
+/* ***********************************************
+  **********Tests for function changeTodo**********
+  ************************************************ */
+
 test("should change todo correctly", () => {
     //arrange
     let todo: Todo = { text: 'Dinner with friends', done: false };
@@ -50,6 +57,10 @@ test("should change todo correctly", () => {
 	expect(todo.done).toBe(true);
 
 });
+
+/* ************************************************
+  *******Tests for function removeAllTodos*********
+  ************************************************** */
 
 test("should remove all todos correctly", () => {
     //arrange
@@ -66,6 +77,10 @@ test("should remove all todos correctly", () => {
     expect(newTodos.length).toBe(0);
 
   });
+
+  /* ***********************************************
+  **********Tests for function sortByName************
+  ************************************************** */
 
 test("should sort todos correctly", () => {
   //arrange 

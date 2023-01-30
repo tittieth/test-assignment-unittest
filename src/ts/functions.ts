@@ -1,6 +1,5 @@
 import { IAddResponse } from "./models/IAddResult";
 import { Todo } from "./models/Todo";
-import { createHtml } from "./main";
 
 export function addTodo(todoText: string, todos: Todo[]): IAddResponse {
   if (todoText.length > 2) {
