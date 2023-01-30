@@ -4,6 +4,7 @@
 
 import * as functions from "../ts/functions";
 import { Todo } from "../ts/models/Todo";
+import { init } from "../ts/main";
 
 beforeEach(() => {
     document.body.innerHTML = "";
@@ -85,3 +86,4 @@ test("should sort todos correctly", () => {
   ];
   expect(newTodos).toStrictEqual(result);
 });
+

@@ -5,6 +5,7 @@
 import * as functions from "../ts/functions";
 import * as main from "../ts/main";
 import { Todo } from "../ts/models/Todo";
+import { sortButton } from "../ts/main";
 
 beforeEach(() => {
   document.body.innerHTML = "";
@@ -62,14 +63,14 @@ test("should add class when todo is done", () => {
 
 test("should call function clearTodos correctly", () => {
   //arrange
-  let spyOnCreateHtml = jest.spyOn(main, "createHtml").mockReturnValue();
+  let spyOnClearTodos = jest.spyOn(main, "clearTodos").mockReturnValue();
 
   //act
   main.clearTodos([]);
 
   //assert
-  expect(spyOnCreateHtml).toHaveBeenCalled();
-  spyOnCreateHtml.mockRestore();
+  expect(spyOnClearTodos).toHaveBeenCalled();
+  spyOnClearTodos.mockRestore();
 });
 
 test("should call function removeAllTodos correctly", () => {
@@ -97,11 +98,13 @@ test("should call function createHtml correctly", () => {
 
   //act
   main.clearTodos(todos);
-  main.toggleTodo(todo2)
+  main.toggleTodo(todo2);
+  main.init();
+  document.getElementById("sortTodos")?.click();
 
   //assert
   expect(spyOnCreateHtml).toHaveBeenCalled();
-  expect(spyOnCreateHtml).toHaveBeenCalledTimes(2);
+  expect(spyOnCreateHtml).toHaveBeenCalledTimes(3);
   spyOnCreateHtml.mockRestore();
 });
 
@@ -130,7 +133,7 @@ test("should call toggleTodo correctly", () => {
   spyOnToggleTodo.mockRestore();
 });
 
-test("get todos from localStorage correctly", () => {
+test("should get todos from localStorage correctly", () => {
   //arrange
   localStorage.setItem("todos", JSON.stringify([{ text: 'todo 1', completed: false }, 
   { text: 'todo 2', completed: true }]));
@@ -150,10 +153,11 @@ test("should call on toggleTodo on click", () => {
   </li></ul>`;
 
   const todos: Todo[] = [
-		{ text: 'Go to bed', done: true },
+		{ text: 'Go to', done: true },
 	];
 
   let spyOnToggleTodo = jest.spyOn(main, "toggleTodo").mockReturnValue();
+
   main.createHtml(todos);
  
 
@@ -163,6 +167,25 @@ test("should call on toggleTodo on click", () => {
   //assert
   expect(spyOnToggleTodo).toHaveBeenCalled();
   spyOnToggleTodo.mockRestore();
+});
+
+test('should toggle todo staate correctly', () => {
+	document.body.innerHTML = `<ul id="todos" class="todo"><li class="todo__text">rida</li>
+  <li class="todo__text">shoppa</li><li class="todo__text">handla</li></ul>`;
+		
+
+	const todos: Todo[] = [
+		{ text: 'rida', done: false },
+		{ text: 'shoppa', done: false },
+		{ text: 'handla', done: false }
+	];
+
+	const spyOnChangeTodo = jest.spyOn(functions, 'changeTodo');
+
+	main.toggleTodo(todos[0]);
+
+	expect(spyOnChangeTodo).toHaveBeenCalled();
+  spyOnChangeTodo.mockRestore();
 });
 
 test("should display error", () => {
@@ -191,4 +214,27 @@ test("should not display error", () => {
   expect(result.classList.contains("show")).toBe(false);
 });
 
+/*
+test("should call function sortByName correctly", () => {
+  //arrange
+  document.body.innerHTML = `<button type="button" id="sortTodos">Sortera efter namn</button>`;
 
+  const todos: Todo[] = [];
+
+  let spyOnSortByName = jest.spyOn(functions, "sortByName").mockReturnValue();
+  let spyOnCreateHtml =jest.spyOn(main, "createHtml").mockReturnValue();
+
+  main.init();
+
+  //act
+  
+  const button = document.querySelector("#sortTodos") as HTMLButtonElement;
+  button.click();
+
+  //assert
+  expect(spyOnSortByName).toHaveBeenCalled();
+  expect(spyOnCreateHtml).toHaveBeenCalled();
+  spyOnSortByName.mockRestore();
+  spyOnCreateHtml.mockRestore();
+});
+*/
